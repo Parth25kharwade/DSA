@@ -2,23 +2,22 @@ class Solution {
     public List<List<Integer>> combinationSum(int[] candidates, int target) {
         List<List<Integer>> res = new ArrayList<>();
 
-        makeCombination(candidates, target, 0, new ArrayList<>(), 0, res);
+        backtrack(0,candidates, target, new ArrayList<>(), res);
         return res;        
     }
 
-    private void makeCombination(int[] candidates, int target, int idx, List<Integer> comb, int total, List<List<Integer>> res) {
-        if (total == target) {
-            res.add(new ArrayList<>(comb));
-            return;
-        }
-
-        if (total > target || idx >= candidates.length) {
-            return;
-        }
-
-        comb.add(candidates[idx]);
-        makeCombination(candidates, target, idx, comb, total + candidates[idx], res);
-        comb.remove(comb.size() - 1);
-        makeCombination(candidates, target, idx + 1, comb, total, res);
+    private void backtrack(int start, int[] arr, int target, List<Integer> temp, List<List<Integer>> result) {
+    if (target == 0) {
+        result.add(new ArrayList<>(temp));
+        return;
     }
+
+    for (int i = start; i < arr.length; i++) {
+        if (arr[i] > target) continue;
+
+        temp.add(arr[i]);
+        backtrack(i, arr, target - arr[i], temp, result); // reuse allowed
+        temp.remove(temp.size() - 1);
+    }
+}
 }
